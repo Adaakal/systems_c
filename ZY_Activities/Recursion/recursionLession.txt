@@ -1,0 +1,76 @@
+Recursive function: Writing the recursive case.
+#include <stdio.h>
+
+void PrintFactorial(int factCounter, int factValue){
+   int nextCounter;
+   int nextValue;
+
+   if (factCounter == 0) {            // Base case: 0! = 1
+      printf("1\n");
+   }
+   else if (factCounter == 1) {       // Base case: Print 1 and result
+      printf("%d = %d\n", factCounter, factValue);
+   }
+   else {                             // Recursive case
+      printf("%d * ", factCounter);
+      nextCounter = factCounter - 1;
+      nextValue = nextCounter * factValue;
+
+      /* Your solution goes here  */
+      return PrintFactorial(nextCounter, nextValue);
+
+
+   }
+}
+
+int main(void) {
+   int userVal;
+
+   scanf("%d", &userVal);
+   printf("%d! = ", userVal);
+   PrintFactorial(userVal, userVal);
+
+   return 0;
+}
+1. Initial call:
+   `PrintFactorial(5, 1)`
+
+2. Recursive call 1:
+   `PrintFactorial(4, 5)`
+   - Prints: `4 *`
+
+3. Recursive call 2:
+   `PrintFactorial(3, 20)`
+   - Prints: `3 *`
+
+4. Recursive call 3:
+   `PrintFactorial(2, 60)`
+   - Prints: `2 *`
+
+5. Recursive call 4:
+   `PrintFactorial(1, 120)`
+   - Base case 2 reached:
+     Prints: `1 = 120`
+
+6. The recursive calls return back in reverse order, passing the control to each previous call:
+
+   - Recursive call 4 returns:
+     Prints: `<Nothing>`
+
+   - Recursive call 3 returns:
+     Prints: `<Nothing>`
+
+   - Recursive call 2 returns:
+     Prints: `<Nothing>`
+
+   - Recursive call 1 returns:
+     Prints: `<Nothing>`
+
+7. The initial call returns:
+   Prints: `<Nothing>`
+
+The final output for the example call `PrintFactorial(5, 1)` would be:
+```
+5 * 4 * 3 * 2 * 1 = 120
+```
+
