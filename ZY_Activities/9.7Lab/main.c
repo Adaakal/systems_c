@@ -1,52 +1,99 @@
 #include <stdio.h>
-/**Write a program that reads the student information from a tab separated values (tsv) file. 
- * The program then creates a text file that records the course grades of the students. 
- * Each row of the tsv file contains the Last Name, First Name, Midterm1 score, Midterm2 score, 
- * and the Final score of a student. A sample of the student information is provided in StudentInfo.tsv. 
- * Assume the number of students is at least 1 and at most 20.
+#include <stdlib.h>
 
-The program performs the following tasks:
+char assignGrade(float avg)
+{
+   if (avg >= 90)
+      return 'A';
+   else if (avg >= 80)
+      return 'B';
+   else if (avg >= 70)
+      return 'C';
+   else if (avg >= 60)
+      return 'D';
+   else
+      return 'F';
+}
 
-Read the file name of the tsv file from the user. Assume the file name has a maximum of 25 characters.
-Open the tsv file and read the student information. Assume each last name or first name has a maximum of 25 characters.
-Compute the average exam score of each student.
-Assign a letter grade to each student based on the average exam score in the following scale:
-A: 90 =< x
-B: 80 =< x < 90
-C: 70 =< x < 80
-D: 60 =< x < 70
-F: x < 60
-Compute the average of each exam.
-Output the last names, first names, exam scores, and letter grades of the students into a text file named report.txt. 
-Output one student per row and separate the values with a tab character.
-Output the average of each exam, with two digits after the decimal point, at the end of report.txt. 
-Hint: Use the precision sub-specifier to format the output.
-*/
+int validScore(int score)
+{
+   return score >= 0 && score <= 100;
+}
 
-int main(void) {
+int main()
+{
 
-   /* TODO: Declare any necessary variables here. */
-   typedef struct Student_struct {
-        char lastName[25];
-        char firstName[25];
-        int midtermScore1;
-        int midtermScore2;
-        int finalScore;
+   typedef struct Student_struct
+   {
+      char lastName[26];
+      char firstName[26];
+      int midterm1;
+      int midterm2;
+      int final;
+      char grade;
    } Student;
 
-   
-   char fileName[25]; 
-   double averageStudentExamScore;  
-   double averageMidterm1Score;
-   double averageMidterm2Score;
-   double averageFinalScore;
-   char letterGrade;
-      
-      
-   /* TODO: Read a file name from the user and read the tsv file here. */
-   
-   
-   /* TODO: Compute student grades and exam averages, then output results to a text file here. */
+   char filename[26];
+   Student students[20];
+   int i = 0;
+   int count = 0;
+   float totalMidterm1 = 0, totalMidterm2 = 0, totalFinal = 0;
+
+   printf("Enter the filename: ");
+   scanf("%s", filename);
+
+   FILE *file = fopen(filename, "r");
+   if (file == NULL)
+   {
+      printf("Could not open file %s\n", filename);
+      return 1;
+   }
+
+   while (i < 20)
+   {
+      if (fscanf(file, "%s\t%s\t%d\t%d\t%d\n", students[i].lastName, students[i].firstName,
+                 &students[i].midterm1, &students[i].midterm2, &students[i].final) != 5)
+      {
+         printf("Invalid input format\n");
+         return 1;
+      }
+
+      if (!validScore(students[i].midterm1) || !validScore(students[i].midterm2) || !validScore(students[i].final))
+      {
+         printf("Invalid score\n");
+         return 1;
+      }
+
+      totalMidterm1 += students[i].midterm1;
+      totalMidterm2 += students[i].midterm2;
+      totalFinal += students[i].final;
+      i++;
+   }
+
+   if (fscanf(file, "%s", filename) != EOF)
+   {
+      printf("Too many students\n");
+      return 1;
+   }
+
+   count = i;
+   fclose(file);
+
+   for (i = 0; i < count; i++)
+   {
+      float avg = (students[i].midterm1 + students[i].midterm2 + students[i].final) / 3.0;
+      students[i].grade = assignGrade(avg);
+   }
+
+   file = fopen("report.txt", "w");
+   for (i = 0; i < count; i++)
+   {
+      fprintf(file, "%s\t%s\t%d\t%d\t%d\t%c\n", students[i].lastName, students[i].firstName,
+              students[i].midterm1, students[i].midterm2, students[i].final, students[i].grade);
+   }
+
+   fprintf(file, "Average:\t\t%.2f\t%.2f\t%.2f\n", totalMidterm1 / count, totalMidterm2 / count, totalFinal / count);
+   fclose(file);
 
    return 0;
 }

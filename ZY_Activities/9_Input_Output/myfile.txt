@@ -1,2 +1,13 @@
 5
-Hello
+10
+20
+40
+80
+1
+
+# for varying amount of info in file
+111
+222
+333
+444
+555
