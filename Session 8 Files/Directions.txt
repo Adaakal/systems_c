@@ -1,0 +1,79 @@
+Directions
+
+1.  open mphTokph.c
+    a. what does strspn do?
+    b. run the following tests in the terminal:
+        > 50
+        > 60
+        > 100
+        > -55
+        > hello
+    c. what output did you get?
+
+2.  open avg.txt and review 
+    a. filter out numeric values in avg.txt using
+        > cat avg.txt | awk '{ print $3 }'
+
+        1. what does awk do?
+        2. what does '{ print $3 }' do?
+
+    b. now apply the input file as input for mphTokph using
+        > cat avg.txt | awk '{ print $3 }' | ./mphTokph
+
+    c. fix the output so the error output does not show
+        > (cat avg.txt | awk '{ print $3 }' | ./mphTokph) 2> /dev/null
+
+        1. what is 2> /dev/null doing?
+        2. does the output show any error messages?
+
+    d. now add "km/h" to the output for each returned value using
+        > (cat avg.txt | awk '{ print $3 }' | ./mphTokph) 2> /dev/null | sed 's/$/ km\/h/'
+
+        1. describe what the sed command is doing.
+
+3. open mphTokph2.c and review
+    a. insert code where directed
+    b. what does getopt() do?
+    c. run the following tests in the terminal
+        > 60
+        > 40
+        > -55
+        > hello
+
+    d. use the -c option to continue running the program when an error is found using
+        > ./mphTokph2 -c
+        > 50
+        > 90
+        > hello
+        > -10
+        > 20
+
+    e. open avg2.txt and review (keep the bad data as shown)
+        1. run the program using
+            > cat avg2.txt | awk '{ print $3 }'
+
+    f. run the program mphTokph2 with the file using
+        > cat avg2.txt | awk '{ print $3 }' | ./mphTokph2 -c
+
+        1. what is the output?
+
+    g. write good output to the output.txt file and all errors to the error.txt file
+        > (cat avg2.txt | awk '{ print $3 }' | ./mphTokph2 -c) 2> errors.txt 1> output.txt
+
+        1. what is stored in output.txt (cat output.txt)?
+        2. what is stored in error.txt (cat error.txt)?
+
+4. open enviroVar.c
+    a. run the program
+        1. what output do you get?
+
+    b. run
+        > echo $USER
+        > echo $HOME
+        > echo $SHELL
+
+5. In a C program, what do setenv() and getenv() do?  
+    1. Try:
+
+         setenv("FULLNAME", "your name here", 1);
+         printf("Your name is %s\n", getenv("FULLNAME"));
